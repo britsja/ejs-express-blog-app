@@ -4,5 +4,12 @@
 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque a temporibus laboriosam, assumenda facere perferendis quos doloribus, sequi, repellat eveniet blanditiis nostrum pariatur ut ipsam nam aliquid vel modi. Optio!
    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque a temporibus laboriosam, assumenda facere perferendis quos doloribus, sequi, repellat eveniet blanditiis nostrum pariatur ut ipsam nam aliquid vel modi. Optio!
    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque a temporibus laboriosam, assumenda facere perferendis quos doloribus, sequi, repellat eveniet blanditiis nostrum pariatur ut ipsam nam aliquid vel modi. Optio!</p>
-
+<div class="blog-posts">    
+    <% blogPostCollection.forEach(function(post, index) { %>
+        <h1><%= post[0] %></h1>
+        <p><%= post[1] %></p>
+        <a href="/blogpost?title=<%= post[0] %>&blogNumber=<%= index %>">More</a>
+    <% }); %>       
+  
+</div>
 <%- include("footer") -%>
