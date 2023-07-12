@@ -14,5 +14,21 @@ app.listen(3000, function() {
 })
 
 app.get("/", function(req, res) {
-    res.render("index");
+    const title = "Blog Home Page";
+    res.render("index", {title: title});
+})
+
+app.get("/about", function(req, res) {
+    const title = "Blog About Page";
+    res.render("about", {title: title});
+})
+
+app.get("/contact", function(req, res) {
+    const title = "Blog Contact Page";
+    res.render("contact", {title: title});
+})
+
+app.get("/create", function(req, res) {
+    const title = "Create a Blog Post";
+    res.render("create", {title: title});
 })
