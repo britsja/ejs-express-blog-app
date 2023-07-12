@@ -1,10 +1,10 @@
 <%- include("header") -%>
-
-<h1>Create a Blog Post</h1>
-<form action="/create" method="post">
-    <input type="text" name="postTitle">
-    <textarea name="newPost"></textarea>
-    <button type="submit" name="submit">Post</button>
-</form>
-
+<div class="container">
+    <h1>Create a Blog Post</h1>
+    <form action="/create" method="post">
+        <input type="text" name="postTitle">
+        <textarea name="newPost"></textarea>
+        <button type="submit" name="submit">Post</button>
+    </form>
+</div>
 <%- include("footer") -%>
