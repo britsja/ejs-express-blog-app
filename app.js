@@ -19,8 +19,7 @@ const blogPostCollection = [
 ];
 
 app.get("/", function(req, res) {
-    const title = "Blog Home Page";
-    console.log(blogPostCollection);
+    const title = "Blog Home Page";    
     res.render("index", {title: title, blogPostCollection: blogPostCollection});
     
 })
