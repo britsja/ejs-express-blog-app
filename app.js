@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+require('dotenv').config({path: __dirname + '/.env'});
 
 const app = express();
 
@@ -8,6 +10,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 app.use(express.static("public"));
+
+console.log(process.env.MONGO_URL);
 
 app.listen(3000, function() {
     console.log("Listening on port 3000");
