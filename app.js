@@ -11,11 +11,25 @@ app.set('view engine', 'ejs');
 
 app.use(express.static("public"));
 
-console.log(process.env.MONGO_URL);
+const uri = process.env.MONGO_URL;
 
 app.listen(3000, function() {
     console.log("Listening on port 3000");
 })
+
+mongoose.connect(uri);
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('MongoDB database connection established successfully');
+})
+
+const blogSchema = new mongoose.Schema ({
+    name: String,
+    content: String,
+    date: Date
+});
+
+const Blogpost = mongoose.model("Blogpost", blogSchema);
 
 const blogPostCollection = [
     ['Lorem Ipsum Post', 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque a temporibus laboriosam, assumenda facere perferendis quos doloribus, sequi, repellat eveniet blanditiis nostrum pariatur ut ipsam nam aliquid vel modi. Optio!'],
@@ -23,8 +37,19 @@ const blogPostCollection = [
 ];
 
 app.get("/", function(req, res) {
-    const title = "Blog Home Page";    
-    res.render("index", {title: title, blogPostCollection: blogPostCollection});
+    const title = "Blog Home Page";
+    
+    Blogpost.find().then((data) => {
+        const blogPostData = [];
+        data.forEach(function(post) {
+            blogPostData.push(post);
+        })
+        
+        console.log(blogPostData);
+        res.render("index", {title: title, blogPostCollection: blogPostData});
+    })
+    
+    
     
 })
 
@@ -45,16 +70,29 @@ app.get("/create", function(req, res) {
 
 app.get("/blogpost", function(req, res) {
     const title = req.query.title;
-    const blogPostNumber = req.query.blogNumber;
-    const blogData = blogPostCollection[blogPostNumber][1];
-    res.render("blogpost", {title: title, blogData: blogData});
+    Blogpost.findOne({name: title}).then((data) => {
+        console.log(data[0]);
+        res.render("blogpost", {title: data.name, blogData: data.content});
+    });     
 })
 
-app.post("/create", function(req, res) {
+app.post("/create", async function(req, res) {
     const blogPost = req.body.newPost;
     const postTitle = req.body.postTitle;
-    const postData = [postTitle, blogPost];
-    blogPostCollection.push(postData);  
-    res.redirect("/");
+    const date = new Date().toISOString().split('T')[0]
+
+    const blogpost = new Blogpost({
+        name: postTitle,
+        content: blogPost,
+        date: date
+    })
+
+    await blogpost.save()
+    .then(() => {
+        res.redirect("/");
+    })
+    .catch((error) => {
+        console.log(error);
+    })   
 
 })
